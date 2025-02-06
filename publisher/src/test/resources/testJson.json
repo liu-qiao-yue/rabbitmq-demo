@@ -1,0 +1,44 @@
+[
+  {
+    "key": "direct",
+    "exchangeName": "hamll.direct",
+    "routingKey": "red",
+    "msg": "hi, direct.queue1队列和direct.queue2"
+  },
+  {
+    "key": "direct",
+    "exchangeName": "hamll.direct",
+    "routingKey": "blue",
+    "msg": "hi, direct.queue1"
+  },
+  {
+    "key": "direct",
+    "exchangeName": "hamll.direct",
+    "routingKey": "yellow",
+    "msg": "hi, direct.queue2"
+  },
+  {
+    "key": "topic",
+    "exchangeName": "hmall.topic",
+    "routingKey": "chain.news",
+    "msg": "hi, topic.queue1和topic.queue2"
+  },
+  {
+    "key": "topic",
+    "exchangeName": "hmall.topic",
+    "routingKey": "xitaiqingyang.meiguo.news",
+    "msg": "hi, topic.queue1"
+  },
+  {
+    "key": "topic",
+    "exchangeName": "hmall.topic",
+    "routingKey": "chain.tianqi",
+    "msg": "hi, topic.queue2"
+  },
+  {
+    "key": "topic",
+    "exchangeName": "hmall.topic",
+    "routingKey": "chain.tianqi.shenyang",
+    "msg": "没有消费者"
+  }
+]

@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    host: 192.168.124.14 # 主机名
+    port: 5672 # 端口号
+    virtual-host: /hmall
+    username: hmall
+    password: 123456
+    listener:
+      simple:
+        prefetch: 1 #每次只能获取一条信息，处理完成后才能获取下一个信息
+        acknowledge-mode: auto # 确认机制
+        retry:
+          enabled: true # 开启消费者失败重试
+          initial-interval: 1000ms # 初始的失败等待时长为 1 秒
+          multiplier: 1 # 下次失败的风带时长倍数，下次等待时长 = multiplier * last-interval
+          max-attempts: 3 # 最大重试次数
+          stateless: true # true 无状态 false 有状态，如果业务中包含事务，这里改为false
+
+logging:
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
