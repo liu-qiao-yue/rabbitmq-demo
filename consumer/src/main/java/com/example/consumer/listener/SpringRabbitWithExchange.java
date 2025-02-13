@@ -1,6 +1,9 @@
 package com.example.consumer.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -62,4 +65,13 @@ public class SpringRabbitWithExchange {
     }
 
 
+    /*--------------------------  延迟交换机  -------------------------------------*/
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "delay.queue", durable = "true"),
+            exchange = @Exchange(value = "delay.direct", delayed = "true"),
+            key = "hi"
+    ))
+    public void delayQueue(String str){
+        log.info("delayQueue 接收到消息：{}", str);
+    }
 }

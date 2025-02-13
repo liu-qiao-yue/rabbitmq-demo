@@ -172,3 +172,34 @@ public class ErrorConfig {
 ---
 
 # 延迟消息
+
+**延迟消息**：生产者发送消息时指定一个时间，消费者不会立刻收到消息，而是在指定时间之后才收到消息
+
+## 死信交换机
+
+当队列中的消息满足以下情况之一，就会成为死信：
+- 消费者使用basic.reject 或 basic.nack 声明消息失败，并且设置requeue参数为false；
+- 消息时一个过期的消息（达到队列或消息本身设置的过期时间），超时无人消费
+- 要投递的队列堆积满了。最早的消息可能成为死信
+
+如果队列通过dead-letter-exchange属性制定了一个交换机，那么该队列中的死信就会投递到这个交换机中。这个交换机成为死信交换机（Dead Letter Exchange DLX）
+
+```java
+@Test
+void testTTLSendMessage(){
+    rabbitTemplate.convertAndSend("dead.test.direct", "test", "i rabbitmq", new MessagePostProcessor(){
+        @Override
+        public Message postProcessMessage(Message message) throws AmqpException {
+            // 或者new Meassage();
+            message.getMessageProperties().setExpiration("5000");
+            return message;
+        }
+    });
+}
+```
+
+
+## 延迟消息插件
+
+该插件的原理是设计了一种延迟消息功能的交换机，当消息投递到交换机后可以暂存一定时间，到期后才投递到队列。
+

@@ -1,9 +1,13 @@
 package com.example;
 
+import com.example.common.CustomMessagePostProcessor;
 import com.example.common.EnhancedCorrelationData;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,5 +128,21 @@ public class AmqpExchangeTest {
 
 
 
+    }
+
+
+    @Test
+    void testSendDelayMessage() throws InterruptedException {
+
+        rabbitTemplate.convertAndSend(
+                "delay.direct",
+                "hi",
+                "hello, i am a message with delay queue",
+//                new CustomMessagePostProcessor(10000L)
+                msg -> {
+                    msg.getMessageProperties().setDelayLong(10000L);
+                    return msg;
+                }
+        );
     }
 }

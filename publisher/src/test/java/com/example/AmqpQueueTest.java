@@ -1,10 +1,15 @@
 package com.example;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,5 +73,17 @@ public class AmqpQueueTest {
         for (int i = 0; i < 1000000; i++) {
             rabbitTemplate.convertAndSend("simple.queue","hi, simple.queue!");
         }
+    }
+
+    @Test
+    void testTTLSendMessage(){
+        rabbitTemplate.convertAndSend("dead.test.direct", "test", "i rabbitmq", new MessagePostProcessor(){
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setExpiration("5000");
+                return message;
+            }
+        });
+
     }
 }

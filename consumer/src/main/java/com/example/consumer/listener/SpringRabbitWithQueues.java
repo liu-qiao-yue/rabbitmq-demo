@@ -24,7 +24,7 @@ public class SpringRabbitWithQueues {
     @RabbitListener(queues = "simple.queue")
     public void consumerMessage(String msg) throws InterruptedException {
         log.info("spring AMQP 接收到消息 {}", msg);
-        throw new RuntimeException("故意抛出的异常");
+//        throw new RuntimeException("故意抛出的异常");
     }
 
 
@@ -62,5 +62,11 @@ public class SpringRabbitWithQueues {
     ))
     public void consumerLazyMessage(String msg) {
         log.info("spring AMQP lazy queue 接收到消息 {}", msg);
+    }
+
+
+    @RabbitListener(queues = "dead.queue")
+    public void consumerMessageWIthTTL(Object msg) throws InterruptedException {
+        log.warn("死信队列消息 {}", msg);
     }
 }
